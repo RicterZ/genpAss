@@ -43,7 +43,6 @@ class Person(object):
             lambda x: '%s%s' % (x[0], ''.join(map(lambda i: i[0].upper(), x[1:]))),
             lambda x: ('%s%s' % (x[0], ''.join(map(lambda i: i[0], x[1:])))).upper(),
         ]
-        print(PINYIN)
         pinyin = PinYin(PINYIN)
         pinyin.load_word()
         name_pinyin_list = map(pinyin.hanzi2pinyin, self.name)
