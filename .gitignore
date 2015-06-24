@@ -1,5 +1,5 @@
 .idea/
-.py[cod]
+*.py[cod]
 build/
 dist/
 genpass.egg-info
