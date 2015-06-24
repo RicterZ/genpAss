@@ -1,9 +1,7 @@
 # coding=utf-8
 from __future__ import print_function
 from optparse import OptionParser
-from model import Person
 import re
-import time
 import sys
 
 
@@ -32,25 +30,8 @@ def cmd_parser():
                       help='email of target, split by ","')
     parser.add_option('-f', '--file', dest='file', action='store',
                       help='json format file\'s path of target information')
+    parser.add_option('--with-dict', dest='with_dict', action='store_true',
+                      help='generate password with weak password dictionary')
 
     args, _ = parser.parse_args()
-    person = Person()
-
-    if args.file:
-        raise NotImplementedError
-    else:
-        person.name = parse_input(args.name)
-        person.username = parse_input(args.username)
-        person.qq_number = parse_input(args.qq_number, 'int')
-        person.email = parse_input(args.email, 'email')
-
-    try:
-        person.birthday = time.strptime(args.birthday, '%Y-%m-%d')
-    except (ValueError, TypeError):
-        person.birthday = None
-
-    if person.is_null:
-        parser.print_help()
-        sys.exit(0)
-
-    return person
+    return args
