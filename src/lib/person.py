@@ -78,11 +78,11 @@ class Person(object):
         with open(DICT) as f:
             dict_password = f.read().splitlines()
         passwords = []
-        for i in range(2):
-            for password_list in permutations([person_passwords, dict_password], i + 1):
-                for password in product(*password_list):
-                    passwords.append(''.join(password))
-        return list(set(passwords))
+        for password_list in permutations([person_passwords, dict_password], 2):
+            for password in product(*password_list):
+                passwords.append(''.join(password))
+        person_passwords.extend(list(set(passwords)))
+        return person_passwords
 
     def __unicode__(self):
         return '<Person: %s>' % str(self.name)
