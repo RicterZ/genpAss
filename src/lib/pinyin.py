@@ -40,7 +40,8 @@ class PinYin(object):
 
 
 if __name__ == '__main__':
-    test = PinYin('data/word.data')
+    print(os.path.join(os.path.dirname(__file__), './data/word.data'))
+    test = PinYin(os.path.join(os.path.dirname(__file__), './data/word.data'))
     test.load_word()
     string = 'Ricter是baka'
     print('in:', string)

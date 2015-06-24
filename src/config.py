@@ -1,2 +1,6 @@
-DICT = './data/dict.txt'
-PINYIN = './data/word.data'
+import os.path
+
+
+basedir = os.path.dirname(__file__)
+DICT = os.path.join(basedir, './data/dict.txt')
+PINYIN = os.path.join(basedir, './data/word.data')

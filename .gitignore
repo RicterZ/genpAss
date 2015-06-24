@@ -1,2 +1,7 @@
 .idea/
 .py[cod]
+build/
+dist/
+genpass.egg-info
+.python-version
+

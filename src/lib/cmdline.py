@@ -1,9 +1,10 @@
 # coding=utf-8
 from __future__ import print_function
 from optparse import OptionParser
-from lib.model import Person
+from model import Person
 import re
 import time
+import sys
 
 
 def parse_input(string, type_='str'):
@@ -47,5 +48,9 @@ def cmd_parser():
         person.birthday = time.strptime(args.birthday, '%Y-%m-%d')
     except (ValueError, TypeError):
         person.birthday = None
+
+    if person.is_null:
+        parser.print_help()
+        sys.exit(0)
 
     return person

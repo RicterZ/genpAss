@@ -2,8 +2,8 @@
 from __future__ import print_function
 import time
 from itertools import product, permutations
-from lib.pinyin import PinYin
-from config import PINYIN
+from pinyin import PinYin
+from ..config import PINYIN
 
 
 class Person(object):
@@ -20,6 +20,11 @@ class Person(object):
             self.email = dict_.get('email', [])
             self.qq_number = dict_.get('qq_number', [])
             self.birthday = dict_.get('birthday', None)
+
+    @property
+    def is_null(self):
+        return (self.name and self.username and self.email
+                and self.qq_number and self.birthday)
 
     def _generate_name(self):
         if not self.name:
@@ -38,6 +43,7 @@ class Person(object):
             lambda x: '%s%s' % (x[0], ''.join(map(lambda i: i[0].upper(), x[1:]))),
             lambda x: ('%s%s' % (x[0], ''.join(map(lambda i: i[0], x[1:])))).upper(),
         ]
+        print(PINYIN)
         pinyin = PinYin(PINYIN)
         pinyin.load_word()
         name_pinyin_list = map(pinyin.hanzi2pinyin, self.name)
