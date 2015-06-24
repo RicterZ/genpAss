@@ -2,7 +2,6 @@
 from __future__ import print_function
 from optparse import OptionParser
 import re
-import sys
 
 
 def parse_input(string, type_='str'):

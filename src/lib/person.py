@@ -3,8 +3,8 @@ from __future__ import print_function
 import time
 from itertools import product, permutations
 from pinyin import PinYin
-from rules import build_in
-from config import PINYIN, DICT
+from ..rules import build_in
+from ..config import PINYIN, DICT
 
 
 class Person(object):
