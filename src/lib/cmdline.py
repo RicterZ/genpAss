@@ -9,7 +9,7 @@ def parse_input(string, type_='str'):
         return ''
     data = map(lambda s: s.strip(), string.split(','))
     if type_ == 'int':
-        data = filter(lambda i: i.isdigit(), data)
+        data = map(str, filter(lambda i: i.isdigit(), data))
     elif type_ == 'email':
         data = filter(lambda i: re.match(r'^[\w\d.-_]+@[\w\d.-]+\.[\w]{2,8}$', i), data)
     return list(set(data))
