@@ -13,6 +13,7 @@ class Person(object):
     email = []
     qq_number = []
     birthday = None
+    mobile_phone = []
 
     def __init__(self, dict_=None):
         if dict_ and isinstance(dict_, (dict, )):
@@ -21,6 +22,7 @@ class Person(object):
             self.email = dict_.get('email', [])
             self.qq_number = dict_.get('qq_number', [])
             self.birthday = dict_.get('birthday', None)
+            self.mobile_phone = dict_.get('mobile_phone', [])
 
     @property
     def is_null(self):
@@ -61,10 +63,23 @@ class Person(object):
             result.append(time.strftime(format_, self.birthday))
         return list(set(result))
 
+    def _generate_mobile(self):
+        return self.mobile_phone if self.mobile_phone else []
+
+    def _generate_qq_number(self):
+        return self.qq_number if self.qq_number else []
+
+    def _generate_info(self):
+        result = []
+        result.extend(self._generate_mobile())
+        result.extend(self._generate_birthday())
+        result.extend(self._generate_qq_number())
+        return list(set(result))
+
     def generate_password(self):
         combination_list = filter(lambda i: i, [
             self._generate_name(),
-            self._generate_birthday(),
+            self._generate_info(),
         ])
         passwords = []
         for i in range(len(combination_list)):

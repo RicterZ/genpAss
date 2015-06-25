@@ -9,7 +9,7 @@ def parse_input(string, type_='str'):
         return ''
     data = map(lambda s: s.strip(), string.split(','))
     if type_ == 'int':
-        data = map(int, filter(lambda i: i.isdigit(), data))
+        data = filter(lambda i: i.isdigit(), data)
     elif type_ == 'email':
         data = filter(lambda i: re.match(r'^[\w\d.-_]+@[\w\d.-]+\.[\w]{2,8}$', i), data)
     return list(set(data))
@@ -29,6 +29,8 @@ def cmd_parser():
                       help='email of target, split by ","')
     parser.add_option('-f', '--file', dest='file', action='store',
                       help='json format file\'s path of target information')
+    parser.add_option('-m', '--mobile', dest='mobile_phone', action='store',
+                      help='mobile phone/phone number of target, split by ","')
     parser.add_option('--with-dict', dest='with_dict', action='store_true',
                       help='generate password with weak password dictionary')
 

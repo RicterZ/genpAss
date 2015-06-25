@@ -15,6 +15,7 @@ def main():
         person.username = parse_input(args.username)
         person.qq_number = parse_input(args.qq_number, 'int')
         person.email = parse_input(args.email, 'email')
+        person.mobile_phone = parse_input(args.mobile_phone, 'int')
 
     try:
         person.birthday = time.strptime(args.birthday, '%Y-%m-%d')
