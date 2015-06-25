@@ -3,7 +3,7 @@ from __future__ import print_function
 import time
 from itertools import product, permutations
 from pinyin import PinYin
-from ..rules import build_in
+from ..rules import built_in
 from ..config import PINYIN, DICT
 
 
@@ -42,8 +42,8 @@ class Person(object):
         pinyin = PinYin(PINYIN)
         pinyin.load_word()
         name_pinyin_list = map(pinyin.hanzi2pinyin, self.name)
-        result.extend(self._format(name_pinyin_list, build_in.name_formats))
-        result.extend(self._format(self.username, build_in.general_formats))
+        result.extend(self._format(name_pinyin_list, built_in.name_formats))
+        result.extend(self._format(self.username, built_in.general_formats))
         result.extend(self._generate_email())
         return list(set(result))
 
@@ -51,13 +51,13 @@ class Person(object):
         if not self.email:
             return []
         id_string = map(lambda i: i.split('@')[0], self.email)
-        return self._format(id_string, build_in.general_formats)
+        return self._format(id_string, built_in.general_formats)
 
     def _generate_birthday(self):
         if not self.birthday:
             return []
         result = []
-        for format_ in build_in.date_formats:
+        for format_ in built_in.date_formats:
             result.append(time.strftime(format_, self.birthday))
         return list(set(result))
 
