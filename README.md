@@ -33,3 +33,5 @@
 可以修改弱口令字典`src/data/dict.txt`，以及增加密码规则`src/rules/rules.py`来增强密码数量。  
   
       
+### LICENSE
+MIT
