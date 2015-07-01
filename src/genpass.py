@@ -1,7 +1,7 @@
 # coding: utf-8
 from __future__ import print_function
-from lib.cmdline import cmd_parser, parse_input
-from lib.person import Person
+from .lib.cmdline import cmd_parser, parse_input
+from .lib.person import Person
 import os
 import sys
 import time
