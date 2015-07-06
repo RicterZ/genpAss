@@ -3,6 +3,7 @@ from __future__ import print_function
 import re
 import time
 import argparse
+import json
 from person import Person
 
 
@@ -44,8 +45,10 @@ def cmd_parser():
     args = parser.parse_args()
 
     if args.is_csv:
-        pass
+        person = []
+    elif args.file:
+        person = Person(dict_={})
     else:
         person = Person(dict_=args.__dict__)
-    print(person)
-    return args
+
+    return (args, person)
