@@ -8,6 +8,7 @@ import argparse
 def email(string):
     if not re.match(r'^[\w\d.-_]+@[\w\d.-]+\.[\w]{2,8}$', string):
         raise ValueError(string)
+    return string
 
 
 def date(date_string):
