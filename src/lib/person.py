@@ -7,6 +7,9 @@ from ..rules import built_in
 from ..config import PINYIN, DICT
 
 
+__all__ = ['Person']
+
+
 class Person(object):
     name = []
     username = []
@@ -14,6 +17,7 @@ class Person(object):
     qq_number = []
     birthday = None
     mobile_phone = []
+    # passwords = []
 
     def __init__(self, dict_=None):
         if dict_ and isinstance(dict_, (dict, )):
@@ -23,63 +27,86 @@ class Person(object):
             self.qq_number = dict_.get('qq_number', [])
             self.birthday = dict_.get('birthday', None)
             self.mobile_phone = dict_.get('mobile_phone', [])
+            # TODO
+            # self.passwords = dict_.get('passwords', [])
 
-    @property
-    def is_null(self):
-        return not any([self.name, self.username, self.email,
-                        self.qq_number, self.birthday])
+    def _generator(self, data, formatter_list):
+        '''generate passwords fragment by formatting function
 
-    def _format(self, data, format_list):
+        :param data: data will be formatted
+        :param format_list: formatting function
+        :return: strings list
+        '''
         result = []
-        for format_ in format_list:
-            result.extend(map(format_, data))
-        return list(set(result))
-
-    def _generate_name(self):
-        if not self.name and not self.email:
-            return []
-        result = []
-
-        # true name
-        pinyin = PinYin(PINYIN)
-        pinyin.load_word()
-        name_pinyin_list = map(pinyin.hanzi2pinyin, self.name)
-        result.extend(self._format(name_pinyin_list, built_in.name_formats))
-        result.extend(self._format(self.username, built_in.general_formats))
-        result.extend(self._generate_email())
+        for format_func in formatter_list:
+            if not callable(format_func):
+                raise TypeError('formatter not callable')
+            result.extend(map(format_func, data))
         return list(set(result))
 
     def _generate_email(self):
+        '''generate passwords fragment from email
+
+        :return: strings list
+        '''
         if not self.email:
             return []
         id_string = map(lambda i: i.split('@')[0], self.email)
-        return self._format(id_string, built_in.general_formats)
+        return self._generator(id_string, built_in.general_formats)
+
+    def _generate_name(self):
+        '''generate passwords fragment from username/real name/email id string
+
+        :return: strings list
+        '''
+        result = []
+        if not any([self.username, self.email, self.name]):
+            return result
+
+        # real name
+        pinyin = PinYin(PINYIN)
+        pinyin.load_word()
+        name_pinyin_list = map(pinyin.hanzi2pinyin, self.name)
+        result.extend(self._generator(name_pinyin_list, built_in.name_formats))
+
+        # username
+        result.extend(self._generator(self.username, built_in.general_formats))
+
+        # email id string
+        result.extend(self._generate_email())
+        return list(set(result))
 
     def _generate_birthday(self):
-        if not self.birthday:
-            return []
+        '''generate passwords fragment from birthday
+
+        :return: strings list
+        '''
         result = []
+        if not self.birthday:
+            return result
         for format_ in built_in.date_formats:
             result.append(time.strftime(format_, self.birthday))
         return list(set(result))
 
-    def _generate_mobile(self):
-        return self.mobile_phone if self.mobile_phone else []
+    def _generate_attached_info(self):
+        '''generate passwords from user attached information
 
-    def _generate_qq_number(self):
-        return self.qq_number if self.qq_number else []
-
-    def _generate_info(self):
+        :return: string list
+        '''
         result = []
-        result.extend(self._generate_mobile())
+        result.extend(self.mobile_phone)
         result.extend(self._generate_birthday())
-        result.extend(self._generate_qq_number())
+        result.extend(self.qq_number)
         return list(set(result))
 
     def generate_password(self):
+        '''generate passwords
+
+        :return:
+        '''
         combination_list = filter(lambda i: i, [
             self._generate_name(),
-            self._generate_info(),
+            self._generate_attached_info(),
         ])
         passwords = []
         for i in range(len(combination_list)):
@@ -89,15 +116,24 @@ class Person(object):
         return list(set(passwords))
 
     def generate_password_with_dict(self):
+        '''generate passwords with wake passwords dict
+
+        :return: string list
+        '''
         person_passwords = self.generate_password()
         with open(DICT) as f:
             dict_password = f.read().splitlines()
+
         passwords = []
         for password_list in permutations([person_passwords, dict_password], 2):
             for password in product(*password_list):
                 passwords.append(''.join(password))
+
         person_passwords.extend(list(set(passwords)))
         return person_passwords
 
-    def __unicode__(self):
-        return '<Person: %s>' % str(self.name)
+    def __str__(self):
+        return ('<Person: "%s", birthday: "%s", username: "%s", email: "%s", QQ: "%s", mobile phone: "%s">' %
+                (self.name, time.strftime('%Y-%m-%d', self.birthday), ','.join(self.username),
+                 ','.join(self.email), ','.join(map(str, self.qq_number)),
+                 ','.join(map(str, self.mobile_phone))))

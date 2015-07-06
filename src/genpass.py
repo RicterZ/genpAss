@@ -1,10 +1,8 @@
 # coding: utf-8
 from __future__ import print_function
 from .lib.cmdline import cmd_parser
-from .lib.person import Person
 import os
 import sys
-import time
 import json
 
 

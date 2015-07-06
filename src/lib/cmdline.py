@@ -3,6 +3,7 @@ from __future__ import print_function
 import re
 import time
 import argparse
+from person import Person
 
 
 def email(string):
@@ -42,5 +43,9 @@ def cmd_parser():
 
     args = parser.parse_args()
 
-    print(args)
+    if args.is_csv:
+        pass
+    else:
+        person = Person(dict_=args.__dict__)
+    print(person)
     return args
