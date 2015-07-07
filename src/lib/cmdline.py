@@ -1,6 +1,7 @@
 # coding=utf-8
 from __future__ import print_function
 import re
+import sys
 import time
 import argparse
 import json
@@ -14,6 +15,8 @@ def email(string):
 
 
 def date(date_string):
+    if not date_string:
+        return None
     return time.strptime(date_string, '%Y-%m-%d')
 
 
@@ -21,33 +24,29 @@ def cmd_parser():
     parser = argparse.ArgumentParser(description='User information')
 
     parser.add_argument('-n', '--name', dest='name', action='store',
-                        help='real name of target')
+                        help='real name of target', nargs='*', default=[])
     parser.add_argument('-u', '--username', dest='username', action='store',
-                        help='usernames of target', nargs='*')
+                        help='usernames of target, English only', nargs='*', default=[])
     parser.add_argument('-q', '--qq', dest='qq_number', action='store',
-                        help='QQ numbers of target', nargs='*', type=int)
+                        help='QQ numbers of target', nargs='*', type=int, default=[])
     parser.add_argument('-e', '--email', dest='email', action='store',
-                        help='email addresses of target', nargs='*', type=email)
+                        help='email addresses of target', nargs='*', type=email, default=[])
     parser.add_argument('-m', '--mobile', dest='mobile_phone', action='store',
-                        help='mobile phone/phone numbers of target', nargs='*', type=int)
+                        help='mobile phone/phone numbers of target', nargs='*', type=int, default=[])
     parser.add_argument('-b', '--birthday', dest='birthday', action='store',
-                        help='birthday of target, format: %%Y-%%m-%%d', type=date)
+                        help='birthday of target, format: %%Y-%%m-%%d', type=date, default=None)
 
     parser.add_argument('--csv', dest='is_csv', action='store_true',
                         help='csv files of users list')
-    parser.add_argument('-f', '--file', dest='file', action='store',
-                        help='json format file\'s path of target information')
     parser.add_argument('--with-dict', dest='with_dict', action='store_true',
                         help='generate password with weak password dictionary')
     parser.add_argument('-o', '--output', dest='output_file', action='store',
-                        help='output result to a json file')
+                        help='output result to a json file', type=argparse.FileType('w'))
 
     args = parser.parse_args()
 
     if args.is_csv:
         person = []
-    elif args.file:
-        person = Person(dict_={})
     else:
         person = Person(dict_=args.__dict__)
 

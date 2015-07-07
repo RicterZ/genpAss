@@ -1,6 +1,7 @@
 # coding=utf-8
 from __future__ import print_function
 import time
+import sys
 from itertools import product, permutations
 from pinyin import PinYin
 from ..rules import built_in
@@ -11,22 +12,15 @@ __all__ = ['Person']
 
 
 class Person(object):
-    name = []
-    username = []
-    email = []
-    qq_number = []
-    birthday = None
-    mobile_phone = []
-    # passwords = []
-
     def __init__(self, dict_=None):
         if dict_ and isinstance(dict_, (dict, )):
             self.name = dict_.get('name', [])
             self.username = dict_.get('username', [])
             self.email = dict_.get('email', [])
             self.qq_number = dict_.get('qq_number', [])
-            self.birthday = dict_.get('birthday', None)
             self.mobile_phone = dict_.get('mobile_phone', [])
+            self.birthday = dict_.get('birthday', None)
+
             # TODO
             # self.passwords = dict_.get('passwords', [])
 
@@ -40,9 +34,9 @@ class Person(object):
         result = []
         for format_func in formatter_list:
             if not callable(format_func):
-                raise TypeError('formatter not callable')
+                raise TypeError('formatter is not callable')
             result.extend(map(format_func, data))
-        return list(set(result))
+        return result
 
     def _generate_email(self):
         '''generate passwords fragment from email
@@ -86,7 +80,7 @@ class Person(object):
             return result
         for format_ in built_in.date_formats:
             result.append(time.strftime(format_, self.birthday))
-        return list(set(result))
+        return result
 
     def _generate_attached_info(self):
         '''generate passwords from user attached information
@@ -133,7 +127,4 @@ class Person(object):
         return person_passwords
 
     def __str__(self):
-        return ('<Person: "%s", birthday: "%s", username: "%s", email: "%s", QQ: "%s", mobile phone: "%s">' %
-                (self.name, time.strftime('%Y-%m-%d', self.birthday), ','.join(self.username),
-                 ','.join(self.email), ','.join(map(str, self.qq_number)),
-                 ','.join(map(str, self.mobile_phone))))
+        return '<Person object>'
