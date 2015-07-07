@@ -5,7 +5,7 @@
 
     git clone https://github.com/RicterZ/genpAss
     cd genAss && python setup.py install
-    
+
 ### 用法
 
 
