@@ -92,6 +92,8 @@ class Person(object):
         :return: string list
         '''
         result = []
+        if not self.company:
+            return result
         general = self._generator(self.company, built_in.general_formats)
         result.extend(self._generator(general, built_in.company_formats))
         return result
