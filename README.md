@@ -1,11 +1,6 @@
 # genpAss
 中国特色的弱口令生成器
 
-### TODOs
-+ [ ] --csv 参数指定用户列表批量生成密码
-
-### What's new
--o 参数可以输出密码到指定文件
 
 ### Installation
 
@@ -14,10 +9,11 @@
 
 ### Usage
 
+
     usage: genpass [-h] [-n [NAME [NAME ...]]] [-u [USERNAME [USERNAME ...]]]
                    [-q [QQ_NUMBER [QQ_NUMBER ...]]] [-e [EMAIL [EMAIL ...]]]
-                   [-m [MOBILE_PHONE [MOBILE_PHONE ...]]] [-b BIRTHDAY] [--csv]
-                   [--with-dict] [-o OUTPUT_FILE]
+                   [-m [MOBILE_PHONE [MOBILE_PHONE ...]]] [-b BIRTHDAY]
+                   [-c COMPANY] [--csv CSV] [--with-dict] [-o OUTPUT_FILE]
 
     User information
 
@@ -35,17 +31,36 @@
                             mobile phone/phone numbers of target
       -b BIRTHDAY, --birthday BIRTHDAY
                             birthday of target, format: %Y-%m-%d
-      --csv                 csv files of users list
-      --with-dict           generate password with weak password dictionary
+      -c COMPANY, --company COMPANY
+                            company(english only)/website domain of target
+      --csv CSV             csv files of users list
+      --with-dict           generate passwords with weak password dictionary
       -o OUTPUT_FILE, --output OUTPUT_FILE
                             output result to a json file
 
+假定一个人的信息如下：  
 
-生成姓名为`王大锤`，用户名为`dachui`和`dacc`，生日为`1995-12-21`，邮箱为`wangdachui@qq.com`的密码，并配合弱口令字典：
 
-    $ genpass -n 王大锤 -u dachui,dacc -b 1995-12-21 -e wangdachui@qq.com --with-dict
+|字段|信息|
+|-----|-----|
+|姓名|王大锤|
+|用户名|dachui,dac|
+|QQ|818271273|
+|手机|13928182828|
+|邮箱|wangdac@gmail.com|
+|生日|1993-12-21|
+|公司|baidu|
 
-可以修改弱口令字典`src/data/dict.txt`，以及增加密码规则`src/rules/rules.py`来增强密码数量。
+可以根据以上信息生成密码：   
+
+    genpass -n 王大锤 -u dachui dac -b 1993-12-21 -c baidu -m 13928182828 -q 818271273 -e wangdac@gmail.com
+
+同时可以添加`--with-dict`来根据常见弱口令组合密码。   
+另外可以通过`--csv`指定 csv 文件批量生成密码，csv 文件格式为：  
+
+    name,email,birthday,username,mobile_phone,qq_number,company,
+    测试,ceshi@x.com,1995-01-03,test cece,18883866666,23591712,google,
+    大头,datou@x.com,1996-03-03,bighead,18883877777 18883899999,392912031,baidu,
 
 
 ### LICENSE
