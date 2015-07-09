@@ -20,6 +20,7 @@ class Person(object):
             self.qq_number = dict_.get('qq_number', [])
             self.mobile_phone = dict_.get('mobile_phone', [])
             self.birthday = dict_.get('birthday', None)
+            self.company = dict_.get('company', '')
 
             # TODO
             # self.passwords = dict_.get('passwords', [])
@@ -35,6 +36,8 @@ class Person(object):
         for format_func in formatter_list:
             if not callable(format_func):
                 raise TypeError('formatter is not callable')
+            if not isinstance(data, (list, set, tuple)):
+                data = [data]
             result.extend(map(format_func, data))
         return result
 
@@ -68,6 +71,7 @@ class Person(object):
 
         # email id string
         result.extend(self._generate_email())
+
         return list(set(result))
 
     def _generate_birthday(self):
@@ -82,8 +86,18 @@ class Person(object):
             result.append(time.strftime(format_, self.birthday))
         return result
 
+    def _generate_company(self):
+        '''generate passwords fragment from company
+
+        :return: string list
+        '''
+        result = []
+        general = self._generator(self.company, built_in.general_formats)
+        result.extend(self._generator(general, built_in.company_formats))
+        return result
+
     def _generate_attached_info(self):
-        '''generate passwords from user attached information
+        '''generate passwords fragment from user attached information
 
         :return: string list
         '''
@@ -91,6 +105,7 @@ class Person(object):
         result.extend(map(str, self.mobile_phone))
         result.extend(self._generate_birthday())
         result.extend(map(str, self.qq_number))
+        result.extend(self._generate_company())
         return list(set(result))
 
     def generate_password(self):

@@ -1,6 +1,7 @@
 # coding=utf-8
 
 general_formats = [
+    lambda x: x.lower(),
     lambda x: x.title(),
     lambda x: x.upper(),
     lambda x: x,
@@ -28,4 +29,9 @@ date_formats = [
     '%Y%-m%-d',
     # '%y',
     # '%-m%-d',
+]
+
+company_formats = [
+    lambda x: '@%s' % x,
+    lambda x: '%s@' % x,
 ]
