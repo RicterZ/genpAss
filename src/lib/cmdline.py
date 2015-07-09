@@ -1,10 +1,11 @@
 # coding=utf-8
 from __future__ import print_function
 import re
-import sys
+import os
 import time
 import argparse
-import json
+import csv
+import itertools
 from person import Person
 
 
@@ -36,18 +37,27 @@ def cmd_parser():
     parser.add_argument('-b', '--birthday', dest='birthday', action='store',
                         help='birthday of target, format: %%Y-%%m-%%d', type=date, default=None)
 
-    parser.add_argument('--csv', dest='is_csv', action='store_true',
+    parser.add_argument('--csv', dest='csv', action='store', type=argparse.FileType('r'),
                         help='csv files of users list')
     parser.add_argument('--with-dict', dest='with_dict', action='store_true',
-                        help='generate password with weak password dictionary')
+                        help='generate passwords with weak password dictionary')
     parser.add_argument('-o', '--output', dest='output_file', action='store',
                         help='output result to a json file', type=argparse.FileType('w'))
 
     args = parser.parse_args()
 
-    if args.is_csv:
-        person = []
+    person_list = []
+    if not args.csv:
+        person_list.append(Person(dict_=args.__dict__))
     else:
-        person = Person(dict_=args.__dict__)
-
-    return (args, person)
+        for line in itertools.islice(csv.reader(args.csv), 1, None):
+            if any(line):
+                if len(line) < 6:
+                    raise Exception('Columns of csv file is not invalid')
+                arg_string = ''
+                for i, arg in enumerate(['-n', '-e', '-b', '-u', '-m', '-q']):
+                    if line[i]:
+                        arg_string += '{0} {1} '.format(arg, line[i])
+                args_csv = parser.parse_args(arg_string.split())
+                person_list.append(Person(dict_=args_csv.__dict__))
+    return (args, person_list)

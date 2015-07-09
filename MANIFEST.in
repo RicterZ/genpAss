@@ -1,4 +1,5 @@
 include README.md
 include src/data/word.data
 include src/data/dict.txt
-include sample.json
+include docs/
+include sample.csv

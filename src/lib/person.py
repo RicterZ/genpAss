@@ -88,9 +88,9 @@ class Person(object):
         :return: string list
         '''
         result = []
-        result.extend(self.mobile_phone)
+        result.extend(map(str, self.mobile_phone))
         result.extend(self._generate_birthday())
-        result.extend(self.qq_number)
+        result.extend(map(str, self.qq_number))
         return list(set(result))
 
     def generate_password(self):
