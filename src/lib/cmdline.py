@@ -36,6 +36,8 @@ def cmd_parser():
                         help='mobile phone/phone numbers of target', nargs='*', type=int, default=[])
     parser.add_argument('-b', '--birthday', dest='birthday', action='store',
                         help='birthday of target, format: %%Y-%%m-%%d', type=date, default=None)
+    parser.add_argument('-c', '--company', dest='company', action='store',
+                        help='company(english only)/website domain of target', type=str)
 
     parser.add_argument('--csv', dest='csv', action='store', type=argparse.FileType('r'),
                         help='csv files of users list')
@@ -45,6 +47,7 @@ def cmd_parser():
                         help='output result to a json file', type=argparse.FileType('w'))
 
     args = parser.parse_args()
+    info_list = ['-n', '-e', '-b', '-u', '-m', '-q', '-c']
 
     person_list = []
     if not args.csv:
@@ -52,10 +55,10 @@ def cmd_parser():
     else:
         for line in itertools.islice(csv.reader(args.csv), 1, None):
             if any(line):
-                if len(line) < 6:
+                if len(line) < len(info_list):
                     raise Exception('Columns of csv file is not invalid')
                 arg_string = ''
-                for i, arg in enumerate(['-n', '-e', '-b', '-u', '-m', '-q']):
+                for i, arg in enumerate(info_list):
                     if line[i]:
                         arg_string += '{0} {1} '.format(arg, line[i])
                 args_csv = parser.parse_args(arg_string.split())
