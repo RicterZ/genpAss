@@ -28,7 +28,7 @@ class Person(object):
         '''generate passwords fragment by formatting function
 
         :param data: data will be formatted
-        :param format_list: formatting function
+        :param formatter_list: formatting function
         :return: strings list
         '''
         result = set()
@@ -109,7 +109,7 @@ class Person(object):
     def generate_password(self):
         '''generate passwords
 
-        :return:
+        :return: list
         '''
         combination_list = filter(lambda i: i, [
             self._generate_name(),
