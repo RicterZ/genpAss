@@ -9,8 +9,10 @@ __all__ = ['PinYin']
 
 
 class PinYin(object):
+    word_dict = {}
+    dict_file = None
+
     def __init__(self, dict_file=''):
-        self.word_dict = {}
         self.dict_file = dict_file
 
     def load_word(self):
