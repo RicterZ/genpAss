@@ -1,7 +1,6 @@
 # coding=utf-8
 from __future__ import print_function
 import time
-import sys
 from itertools import product, permutations
 from pinyin import PinYin
 from ..rules import built_in
@@ -32,14 +31,14 @@ class Person(object):
         :param format_list: formatting function
         :return: strings list
         '''
-        result = []
+        result = set()
         for format_func in formatter_list:
             if not callable(format_func):
                 raise TypeError('formatter is not callable')
             if not isinstance(data, (list, set, tuple)):
                 data = [data]
-            result.extend(map(format_func, data))
-        return result
+            result.update(map(format_func, data))
+        return list(result)
 
     def _generate_email(self):
         '''generate passwords fragment from email
@@ -56,34 +55,33 @@ class Person(object):
 
         :return: strings list
         '''
-        result = []
         if not any([self.username, self.email, self.name]):
-            return result
+            return []
 
         # real name
+        result = set()
         pinyin = PinYin(PINYIN)
         pinyin.load_word()
         name_pinyin_list = map(pinyin.hanzi2pinyin, self.name)
-        result.extend(self._generator(name_pinyin_list, built_in.name_formats))
+        result.update(self._generator(name_pinyin_list, built_in.name_formats))
 
         # username
-        result.extend(self._generator(self.username, built_in.general_formats))
+        result.update(self._generator(self.username, built_in.general_formats))
 
-        # email id string
-        result.extend(self._generate_email())
-
-        return list(set(result))
+        # email id_string
+        result.update(self._generate_email())
+        return list(result)
 
     def _generate_birthday(self):
         '''generate passwords fragment from birthday
 
         :return: strings list
         '''
-        result = []
         if not self.birthday:
-            return result
+            return []
+        result = set()
         for format_ in built_in.date_formats:
-            result.append(time.strftime(format_, self.birthday))
+            result.update(time.strftime(format_, self.birthday))
         return result
 
     def _generate_company(self):
@@ -91,24 +89,22 @@ class Person(object):
 
         :return: string list
         '''
-        result = []
         if not self.company:
-            return result
+            return []
         general = self._generator(self.company, built_in.general_formats)
-        result.extend(self._generator(general, built_in.company_formats))
-        return result
+        return list(self._generator(general, built_in.company_formats))
 
     def _generate_attached_info(self):
         '''generate passwords fragment from user attached information
 
         :return: string list
         '''
-        result = []
-        result.extend(map(str, self.mobile_phone))
-        result.extend(self._generate_birthday())
-        result.extend(map(str, self.qq_number))
-        result.extend(self._generate_company())
-        return list(set(result))
+        result = set()
+        result.update(map(str, self.mobile_phone))
+        result.update(self._generate_birthday())
+        result.update(map(str, self.qq_number))
+        result.update(self._generate_company())
+        return list(result)
 
     def generate_password(self):
         '''generate passwords
@@ -119,12 +115,12 @@ class Person(object):
             self._generate_name(),
             self._generate_attached_info(),
         ])
-        passwords = []
+        passwords = set()
         for i in range(len(combination_list)):
             for data in permutations(combination_list, i + 1):
                 for password in product(*data):
-                    passwords.append(''.join(password))
-        return list(set(passwords))
+                    passwords.add(''.join(password))
+        return list(passwords)
 
     def generate_password_with_dict(self):
         '''generate passwords with wake passwords dict
@@ -135,12 +131,12 @@ class Person(object):
         with open(DICT) as f:
             dict_password = f.read().splitlines()
 
-        passwords = []
+        passwords = set()
         for password_list in permutations([person_passwords, dict_password], 2):
             for password in product(*password_list):
-                passwords.append(''.join(password))
+                passwords.update(''.join(password))
 
-        person_passwords.extend(list(set(passwords)))
+        person_passwords.extend(list(passwords))
         return person_passwords
 
     def __str__(self):
