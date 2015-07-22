@@ -66,4 +66,5 @@ def cmd_parser():
                         arg_string += '{0} {1} '.format(arg, line[i])
                 args_csv = parser.parse_args(arg_string.split())
                 person_list.append(Person(dict_=args_csv.__dict__))
+
     return (args, person_list)
