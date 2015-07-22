@@ -3,8 +3,8 @@ from __future__ import print_function
 import time
 from itertools import product, permutations
 from pinyin import PinYin
-from ..rules import built_in
-from ..config import PINYIN, DICT
+from genpass.rules import built_in
+from genpass.config import PINYIN, DICT
 
 
 __all__ = ['Person']

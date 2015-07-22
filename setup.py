@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-from src import __version__, __author__, __email__
+from genpass import __version__, __author__, __email__
 
 
 setup(
@@ -17,7 +17,7 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'genpass = src.genpass:main',
+            'genpass = genpass.command:main',
         ]
     },
     license='MIT',

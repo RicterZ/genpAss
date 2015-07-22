@@ -5,7 +5,7 @@ import time
 import argparse
 import csv
 import itertools
-from person import Person
+from genpass.lib.person import Person
 
 
 def email(string):
