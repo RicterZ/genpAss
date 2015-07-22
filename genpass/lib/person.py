@@ -24,13 +24,16 @@ class Person(object):
             # TODO
             # self.passwords = dict_.get('passwords', [])
 
-    def _generator(self, data, formatter_list):
+    def _generator_map(self, data, formatter_list):
         '''generate passwords fragment by formatting function
 
         :param data: data will be formatted
         :param formatter_list: formatting function
         :return: strings list
         '''
+        if not data:
+            return []
+
         result = set()
         for format_func in formatter_list:
             if not callable(format_func):
@@ -45,28 +48,23 @@ class Person(object):
 
         :return: strings list
         '''
-        if not self.email:
-            return []
         id_string = map(lambda i: i.split('@')[0], self.email)
-        return self._generator(id_string, built_in.general_formats)
+        return self._generator_map(id_string, built_in.general_formats)
 
     def _generate_name(self):
         '''generate passwords fragment from username/real name/email id string
 
         :return: strings list
         '''
-        if not any([self.username, self.email, self.name]):
-            return []
-
         # real name
         result = set()
         pinyin = PinYin(PINYIN)
         pinyin.load_word()
         name_pinyin_list = map(pinyin.hanzi2pinyin, self.name)
-        result.update(self._generator(name_pinyin_list, built_in.name_formats))
+        result.update(self._generator_map(name_pinyin_list, built_in.name_formats))
 
         # username
-        result.update(self._generator(self.username, built_in.general_formats))
+        result.update(self._generator_map(self.username, built_in.general_formats))
 
         # email id_string
         result.update(self._generate_email())
@@ -77,31 +75,22 @@ class Person(object):
 
         :return: strings list
         '''
-        if not self.birthday:
-            return []
-        result = set()
-        for format_ in built_in.date_formats:
-            result.update(time.strftime(format_, self.birthday))
-        return result
+        return list(self._generator_map(self.birthday, built_in.date_formats))
 
     def _generate_company(self):
         '''generate passwords fragment from company
 
         :return: string list
         '''
-        if not self.company:
-            return []
-        general = self._generator(self.company, built_in.general_formats)
-        return list(self._generator(general, built_in.company_formats))
+        general = self._generator_map(self.company, built_in.general_formats)
+        return list(self._generator_map(general, built_in.company_formats))
 
     def _generate_qq(self):
         '''generate passwords fragment from qq number
 
         :return: string list
         '''
-        if not self.qq_number:
-            return []
-        return list(self._generator(map(str, self.qq_number), built_in.qq_formats))
+        return list(self._generator_map(map(str, self.qq_number), built_in.qq_formats))
 
     def _generate_attached_info(self):
         '''generate passwords fragment from user attached information
