@@ -54,6 +54,11 @@ Class Person
     + params: none
     + returns: list
     
++ `_generate_qq`
+    + desc: generate passwords fragment from qq numbers
+    + params: none
+    + returns: list
+  
 + `_generate_attached_info`
     + desc: generate passwords fragment from user attached information
     + params: none
