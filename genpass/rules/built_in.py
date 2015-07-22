@@ -1,4 +1,6 @@
 # coding=utf-8
+import time
+
 
 general_formats = [
     lambda x: x.lower(),
@@ -21,12 +23,12 @@ name_formats = [
 ]
 
 date_formats = [
-    '%Y',
-    '%m%d',
-    '%Y%m%d',
-    '%y%m%d',
-    '%y%-m%-d',
-    '%Y%-m%-d',
+    lambda x: time.strftime('%Y', x),
+    lambda x: time.strftime('%m%d', x),
+    lambda x: time.strftime('%Y%m%d', x),
+    lambda x: time.strftime('%y%m%d', x),
+    lambda x: time.strftime('%y%-m%-d', x),
+    lambda x: time.strftime('%Y%-m%-d', x),
     # '%y',
     # '%-m%-d',
 ]
@@ -34,4 +36,10 @@ date_formats = [
 company_formats = [
     lambda x: '@%s' % x,
     lambda x: '%s@' % x,
+]
+
+
+qq_formats = [
+    lambda x: 'QQ%s' % x,
+    lambda x: 'qq%s' % x,
 ]

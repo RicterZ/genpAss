@@ -1,5 +1,5 @@
 include README.md
-include src/data/word.data
-include src/data/dict.txt
+include genpass/data/word.data
+include genpass/data/dict.txt
 include docs/
 include sample.csv

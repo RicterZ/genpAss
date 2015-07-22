@@ -28,7 +28,7 @@ Class Person
 
 ### methods
 
-+ `_generator`
++ `_generator_map`
     + desc: generate passwords fragment by formatting function
     + params: `data`, type: str, desc: string which will be formatted
     + params: `formatter_list`, type: sequence of callable, desc: formatter functions
@@ -54,6 +54,11 @@ Class Person
     + params: none
     + returns: list
     
++ `_generate_qq`
+    + desc: generate passwords fragment from qq numbers
+    + params: none
+    + returns: list
+  
 + `_generate_attached_info`
     + desc: generate passwords fragment from user attached information
     + params: none
