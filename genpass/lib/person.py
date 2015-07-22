@@ -94,6 +94,15 @@ class Person(object):
         general = self._generator(self.company, built_in.general_formats)
         return list(self._generator(general, built_in.company_formats))
 
+    def _generate_qq(self):
+        '''generate passwords fragment from qq number
+
+        :return: string list
+        '''
+        if not self.qq_number:
+            return []
+        return list(self._generator(map(str, self.qq_number), built_in.qq_formats))
+
     def _generate_attached_info(self):
         '''generate passwords fragment from user attached information
 
@@ -102,7 +111,7 @@ class Person(object):
         result = set()
         result.update(map(str, self.mobile_phone))
         result.update(self._generate_birthday())
-        result.update(map(str, self.qq_number))
+        result.update(self._generate_qq())
         result.update(self._generate_company())
         return list(result)
 

@@ -46,6 +46,10 @@ def cmd_parser():
                         help='output result to a json file', type=argparse.FileType('w'))
 
     args = parser.parse_args()
+    if not any(args.__dict__.values()):
+        parser.print_help()
+        raise SystemExit
+
     info_list = ['-n', '-e', '-b', '-u', '-m', '-q', '-c']
 
     person_list = []
