@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
-from genpass import __version__, __author__, __email__
+from genpass import VERSION, __author__, __email__
 
 
 setup(
     name='genpass',
-    version=__version__,
+    version=VERSION,
     packages=find_packages(),
 
     author=__author__,
