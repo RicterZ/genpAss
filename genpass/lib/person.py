@@ -11,6 +11,14 @@ __all__ = ['Person']
 
 
 class Person(object):
+    name = []
+    username = []
+    email = []
+    qq_number = []
+    mobile_phone = []
+    birthday = None
+    company = ''
+
     def __init__(self, dict_=None):
         if dict_ and isinstance(dict_, (dict, )):
             self.name = dict_.get('name', [])
@@ -41,7 +49,7 @@ class Person(object):
             if not isinstance(data, (list, set, tuple)):
                 data = [data]
             result.update(map(format_func, data))
-        return list(result)
+        return result
 
     def _generate_email(self):
         '''generate passwords fragment from email
@@ -68,14 +76,14 @@ class Person(object):
 
         # email id_string
         result.update(self._generate_email())
-        return list(result)
+        return result
 
     def _generate_birthday(self):
         '''generate passwords fragment from birthday
 
         :return: strings list
         '''
-        return list(self._generator_map(self.birthday, built_in.date_formats))
+        return self._generator_map(self.birthday, built_in.date_formats)
 
     def _generate_company(self):
         '''generate passwords fragment from company
@@ -83,14 +91,14 @@ class Person(object):
         :return: string list
         '''
         general = self._generator_map(self.company, built_in.general_formats)
-        return list(self._generator_map(general, built_in.company_formats))
+        return self._generator_map(general, built_in.company_formats)
 
     def _generate_qq(self):
         '''generate passwords fragment from qq number
 
         :return: string list
         '''
-        return list(self._generator_map(map(str, self.qq_number), built_in.qq_formats))
+        return self._generator_map(map(str, self.qq_number), built_in.qq_formats)
 
     def _generate_attached_info(self):
         '''generate passwords fragment from user attached information
@@ -102,7 +110,7 @@ class Person(object):
         result.update(self._generate_birthday())
         result.update(self._generate_qq())
         result.update(self._generate_company())
-        return list(result)
+        return result
 
     def generate_password(self):
         '''generate passwords
@@ -118,7 +126,7 @@ class Person(object):
             for data in permutations(combination_list, i + 1):
                 for password in product(*data):
                     passwords.add(''.join(password))
-        return list(passwords)
+        return passwords
 
     def generate_password_with_dict(self):
         '''generate passwords with wake passwords dict
@@ -128,13 +136,12 @@ class Person(object):
         person_passwords = self.generate_password()
         with open(DICT) as f:
             dict_password = f.read().splitlines()
-
         passwords = set()
         for password_list in permutations([person_passwords, dict_password], 2):
             for password in product(*password_list):
-                passwords.update(''.join(password))
+                passwords.add(''.join(password))
 
-        person_passwords.extend(list(passwords))
+        person_passwords.update(passwords)
         return person_passwords
 
     def __str__(self):
