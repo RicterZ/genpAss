@@ -28,7 +28,7 @@ Class Person
 
 ### methods
 
-+ `_generator_map`
++ `generator_map`
     + desc: generate passwords fragment by formatting function
     + params: `data`, type: str, desc: string which will be formatted
     + params: `formatter_list`, type: sequence of callable, desc: formatter functions

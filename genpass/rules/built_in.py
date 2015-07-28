@@ -32,14 +32,3 @@ date_formats = [
     # '%y',
     # '%-m%-d',
 ]
-
-company_formats = [
-    lambda x: '@%s' % x,
-    lambda x: '%s@' % x,
-]
-
-
-qq_formats = [
-    lambda x: 'QQ%s' % x,
-    lambda x: 'qq%s' % x,
-]
