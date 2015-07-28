@@ -5,9 +5,8 @@ import time
 import argparse
 import csv
 import itertools
-import generator
-from rules import built_in
 from lib.person import Person
+from router import field_map
 
 
 def email(string):
@@ -51,15 +50,6 @@ def cmd_parser():
     if not any(args.__dict__.values()):
         parser.print_help()
         raise SystemExit
-
-    field_map = (
-        ('qq', None),
-        ('birthday', built_in.date_formats),
-        ('company', built_in.general_formats),
-        ('name', built_in.name_formats, generator.generate_name),
-        (('username', 'name'), built_in.general_formats),
-        (('email', 'name'), built_in.general_formats),
-    )
 
     info_list = ['-n', '-e', '-b', '-u', '-m', '-q', '-c']
 
