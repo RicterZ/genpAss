@@ -1,6 +1,6 @@
 # coding: utf-8
 from __future__ import print_function
-from genpass.lib.cmdline import cmd_parser
+from lib.cmdline import cmd_parser
 
 
 class GeneratePassword(object):

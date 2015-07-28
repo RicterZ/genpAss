@@ -5,7 +5,9 @@ import time
 import argparse
 import csv
 import itertools
-from genpass.lib.person import Person
+import generator
+from rules import built_in
+from lib.person import Person
 
 
 def email(string):
@@ -27,7 +29,7 @@ def cmd_parser():
                         help='real name of target', nargs='*', default=[])
     parser.add_argument('-u', '--username', dest='username', action='store',
                         help='usernames of target, English only', nargs='*', default=[])
-    parser.add_argument('-q', '--qq', dest='qq_number', action='store',
+    parser.add_argument('-q', '--qq', dest='qq', action='store',
                         help='QQ numbers of target', nargs='*', type=int, default=[])
     parser.add_argument('-e', '--email', dest='email', action='store',
                         help='email addresses of target', nargs='*', type=email, default=[])
@@ -50,14 +52,24 @@ def cmd_parser():
         parser.print_help()
         raise SystemExit
 
+    field_map = (
+        ('qq', None),
+        ('birthday', built_in.date_formats),
+        ('company', built_in.general_formats),
+        ('name', built_in.name_formats, generator.generate_name),
+        (('username', 'name'), built_in.general_formats),
+        (('email', 'name'), built_in.general_formats),
+    )
+
     info_list = ['-n', '-e', '-b', '-u', '-m', '-q', '-c']
 
     person_list = []
     if not args.csv:
-        person_list.append(Person(dict_=args.__dict__))
+        person_list.append(Person(information=args.__dict__, field_map=field_map))
     else:
         for line in itertools.islice(csv.reader(args.csv), 1, None):
             if any(line):
+                # TODO: validate the columns
                 if len(line) < len(info_list):
                     raise Exception('Columns of csv file is not invalid')
                 arg_string = ''
@@ -65,5 +77,5 @@ def cmd_parser():
                     if line[i]:
                         arg_string += '{0} {1} '.format(arg, line[i])
                 args_csv = parser.parse_args(arg_string.split())
-                person_list.append(Person(dict_=args_csv.__dict__))
+                person_list.append(Person(information=args_csv.__dict__, field_map=field_map))
     return (args, person_list)
