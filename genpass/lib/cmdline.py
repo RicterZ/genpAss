@@ -5,9 +5,8 @@ import time
 import argparse
 import csv
 import itertools
-import generator
-from rules import built_in
-from lib.person import Person
+from genpass.lib.person import Person
+from genpass.router import field_map
 
 
 def email(string):
@@ -33,12 +32,12 @@ def cmd_parser():
                         help='QQ numbers of target', nargs='*', type=int, default=[])
     parser.add_argument('-e', '--email', dest='email', action='store',
                         help='email addresses of target', nargs='*', type=email, default=[])
-    parser.add_argument('-m', '--mobile', dest='mobile_phone', action='store',
+    parser.add_argument('-m', '--mobile', dest='mobile', action='store',
                         help='mobile phone/phone numbers of target', nargs='*', type=int, default=[])
     parser.add_argument('-b', '--birthday', dest='birthday', action='store',
                         help='birthday of target, format: %%Y-%%m-%%d', type=date, default=None)
-    parser.add_argument('-c', '--company', dest='company', action='store',
-                        help='company(english only)/website domain of target', type=str)
+    parser.add_argument('-c', '--company', dest='company', nargs='*', action='store',
+                        help='company(english only)/website domain of target', type=str, default=[])
 
     parser.add_argument('--csv', dest='csv', action='store', type=argparse.FileType('r'),
                         help='csv files of users list')
@@ -51,15 +50,6 @@ def cmd_parser():
     if not any(args.__dict__.values()):
         parser.print_help()
         raise SystemExit
-
-    field_map = (
-        ('qq', None),
-        ('birthday', built_in.date_formats),
-        ('company', built_in.general_formats),
-        ('name', built_in.name_formats, generator.generate_name),
-        (('username', 'name'), built_in.general_formats),
-        (('email', 'name'), built_in.general_formats),
-    )
 
     info_list = ['-n', '-e', '-b', '-u', '-m', '-q', '-c']
 
