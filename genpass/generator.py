@@ -5,9 +5,12 @@ from config import PINYIN
 
 
 def generate_name(data, rule):
-    result = set()
     pinyin = PinYin(PINYIN)
     pinyin.load_word()
     name_pinyin_list = map(pinyin.hanzi2pinyin, data)
-    result.update(Person.generator_map(name_pinyin_list, rule))
-    return result
+    return Person.generator_map(name_pinyin_list, rule)
+
+
+def generate_id_string(data, rule):
+    id_string = map(lambda x: x.split('@')[0], data)
+    return set(Person.generator_map(id_string, rule))

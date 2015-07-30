@@ -2,7 +2,7 @@
 from __future__ import print_function
 import re
 from itertools import product
-from rules import built_in, combinations
+from genpass.rules import combinations
 
 
 __all__ = ['Person']
