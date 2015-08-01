@@ -51,21 +51,11 @@ def cmd_parser():
         parser.print_help()
         raise SystemExit
 
-    info_list = ['-n', '-e', '-b', '-u', '-m', '-q', '-c']
-
     person_list = []
     if not args.csv:
         person_list.append(Person(information=args.__dict__, field_map=field_map))
     else:
-        for line in itertools.islice(csv.reader(args.csv), 1, None):
-            if any(line):
-                # TODO: validate the columns
-                if len(line) < len(info_list):
-                    raise Exception('Columns of csv file is not invalid')
-                arg_string = ''
-                for i, arg in enumerate(info_list):
-                    if line[i]:
-                        arg_string += '{0} {1} '.format(arg, line[i])
-                args_csv = parser.parse_args(arg_string.split())
-                person_list.append(Person(information=args_csv.__dict__, field_map=field_map))
+        # TODO: from csv
+        pass
+
     return (args, person_list)
