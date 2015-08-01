@@ -24,7 +24,7 @@ class Person(object):
         :return: strings list
         '''
         if not data:
-            return []
+            return set()
 
         result = set()
         for format_func in formatter_list:
@@ -52,9 +52,9 @@ class Person(object):
                 alias = field
 
             if not rule and not method:
-                returned = self.information.get(field, [])
+                returned = self.information.get(field, set())
             elif rule and not method:
-                returned = self.generator_map(self.information.get(field, []), rule)
+                returned = self.generator_map(self.information.get(field, set()), rule)
             elif method:
                 if not callable(method):
                     raise TypeError('Process function is not callable')
