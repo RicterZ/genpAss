@@ -20,6 +20,7 @@ rules = [
 
     'QQ{qq}',
     'qq{qq}',
+    '{qq}@{name}',
 
     '{email}@{company}',
     '{email}#{company}',
