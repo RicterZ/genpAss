@@ -9,6 +9,8 @@ rules = [
     '{mobile}',
 
     '{username}.',
+    '{username}!',
+    '{username}!0123',
     '{username}123',
 
     '{company}123',
