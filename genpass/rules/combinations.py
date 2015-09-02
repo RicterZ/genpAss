@@ -18,6 +18,7 @@ rules = [
     '{company}12345',
     '{company}2014',
     '{company}2008',
+    '{company}#123',
     '{company}@123',
     '{company}@2014',
     '{company}@2015',
