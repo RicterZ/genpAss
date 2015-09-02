@@ -2,7 +2,8 @@
 from __future__ import print_function
 import re
 from itertools import product
-from genpass.rules import combinations
+from genpass.generator import generator_map, generate_id_string
+from genpass.rules import combinations, built_in
 
 
 __all__ = ['Person']
@@ -13,27 +14,14 @@ class Person(object):
 
     def __init__(self, information=None, field_map=()):
         self.information = {} if information is None else information
-        self.field_map = field_map
-
-    @classmethod
-    def generator_map(cls, data, formatter_list):
-        '''generate passwords fragment by formatting function
-
-        :param data: data will be formatted
-        :param formatter_list: formatting function
-        :return: strings list
-        '''
-        if not data:
-            return set()
-
-        result = set()
-        for format_func in formatter_list:
-            if not callable(format_func):
-                raise TypeError('formatter is not callable')
-            if not isinstance(data, (list, set, tuple)):
-                data = [data]
-            result.update(map(format_func, data))
-        return result
+        if information and not field_map:
+            field_map = []
+            for key in information.keys():
+                if key == 'email':
+                    field_map.append((key, built_in.general_formats, generate_id_string))
+                else:
+                    field_map.append((key, built_in.general_formats))
+        self.field_map = tuple(field_map)
 
     def generate_source_dict(self):
         '''generate source dictionary `source_dict`.
@@ -88,7 +76,7 @@ class Person(object):
             if not rule and not method:
                 returned = self.information.get(field, set())
             elif rule and not method:
-                returned = self.generator_map(self.information.get(field, set()), rule)
+                returned = generator_map(self.information.get(field, set()), rule)
             elif method:
                 if not callable(method):
                     raise TypeError('Process function is not callable')
@@ -126,10 +114,12 @@ class Person(object):
         :return:
         '''
         self.generate_source_dict()
-        match_keys = re.compile('\{(%s)\}' % '|'.join(self.information.keys()))
+        match_needed_keys = re.compile('\{(%s)\}' % '|'.join(self.information.keys()))
+        match_keys = re.compile('\{([a-zA-Z0-9_]+?)\}')
         for rule in combinations.rules:
-            dependent_keys = filter(lambda x: x if x in self.information.keys() else False, match_keys.findall(rule))
-            if all(map(lambda x: x in self.source_dict.keys(), dependent_keys)) and dependent_keys:
+            dependent_keys = match_needed_keys.findall(rule)
+            all_keys = match_keys.findall(rule)
+            if all(map(lambda x: x in dependent_keys, all_keys)) and dependent_keys:
                 dependence = {i: self.source_dict[i] for i in dependent_keys}
                 for i in self.combined_zip(dependence):
                     yield rule.format(**i)
