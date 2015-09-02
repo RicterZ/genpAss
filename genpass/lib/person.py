@@ -129,7 +129,7 @@ class Person(object):
         match_keys = re.compile('\{(%s)\}' % '|'.join(self.information.keys()))
         for rule in combinations.rules:
             dependent_keys = filter(lambda x: x if x in self.information.keys() else False, match_keys.findall(rule))
-            if all(map(lambda x: x in self.source_dict.keys(), dependent_keys)):
+            if all(map(lambda x: x in self.source_dict.keys(), dependent_keys)) and dependent_keys:
                 dependence = {i: self.source_dict[i] for i in dependent_keys}
                 for i in self.combined_zip(dependence):
                     yield rule.format(**i)
