@@ -2,11 +2,21 @@
 from __future__ import print_function
 import re
 from itertools import product
-from genpass.generator import generator_map, generate_id_string
+import genpass.generator
 from genpass.rules import combinations, built_in
 
 
 __all__ = ['Person']
+
+
+BUILT_IN_FIELD_MAP = (
+    ('qq', None),
+    ('birthday', built_in.date_formats),
+    ('company', built_in.general_formats),
+    ('name', built_in.name_formats, genpass.generator.generate_name),
+    ('username', built_in.general_formats),
+    (('email', 'username'), built_in.general_formats, genpass.generator.generate_id_string),
+)
 
 
 class Person(object):
@@ -14,7 +24,7 @@ class Person(object):
 
     def __init__(self, information=None, field_map=()):
         self.information = {} if information is None else information
-        self.field_map = field_map
+        self.field_map = field_map if field_map else BUILT_IN_FIELD_MAP
 
     def generate_source_dict(self):
         '''generate source dictionary `source_dict`.
@@ -69,7 +79,7 @@ class Person(object):
             if not rule and not method:
                 returned = self.information.get(field, set())
             elif rule and not method:
-                returned = generator_map(self.information.get(field, set()), rule)
+                returned = genpass.generator.generator_map(self.information.get(field, set()), rule)
             elif method:
                 if not callable(method):
                     raise TypeError('Process function is not callable')
