@@ -3,10 +3,7 @@ from __future__ import print_function
 import re
 import time
 import argparse
-import csv
-import itertools
 from genpass.lib.person import Person
-from genpass.router import field_map
 
 
 def email(string):
@@ -53,7 +50,7 @@ def cmd_parser():
 
     person_list = []
     if not args.csv:
-        person_list.append(Person(information=args.__dict__, field_map=field_map))
+        person_list.append(Person(information=args.__dict__))
     else:
         # TODO: from csv
         pass
