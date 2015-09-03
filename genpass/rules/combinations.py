@@ -29,8 +29,6 @@ rules = [
     'qq{qq}',
     '{qq}@{name}',
 
-    '{email}@{company}',
-    '{email}#{company}',
     '{username}@{company}',
     '{username}#{company}',
     '{name}@{company}',
