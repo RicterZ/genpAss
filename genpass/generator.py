@@ -26,13 +26,13 @@ def generate_name(data, rule):
     pinyin = PinYin(PINYIN)
     pinyin.load_word()
     name_pinyin_list = map(pinyin.hanzi2pinyin, data)
-    return Person.generator_map(name_pinyin_list, rule)
+    return generator_map(name_pinyin_list, rule)
 
 
 def generate_id_string(data, rule):
+    id_string = set()
     if isinstance(data, (str, )):
         id_string = data.split('@')[0]
     elif isinstance(data, (tuple, list, set)):
         id_string = map(lambda x: x.split('@')[0], data)
-
     return set(generator_map(id_string, rule))

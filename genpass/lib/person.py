@@ -14,14 +14,7 @@ class Person(object):
 
     def __init__(self, information=None, field_map=()):
         self.information = {} if information is None else information
-        if information and not field_map:
-            field_map = []
-            for key in information.keys():
-                if key == 'email':
-                    field_map.append((key, built_in.general_formats, generate_id_string))
-                else:
-                    field_map.append((key, built_in.general_formats))
-        self.field_map = tuple(field_map)
+        self.field_map = field_map
 
     def generate_source_dict(self):
         '''generate source dictionary `source_dict`.
@@ -114,7 +107,7 @@ class Person(object):
         :return:
         '''
         self.generate_source_dict()
-        match_needed_keys = re.compile('\{(%s)\}' % '|'.join(self.information.keys()))
+        match_needed_keys = re.compile('\{(%s)\}' % '|'.join(self.source_dict.keys()))
         match_keys = re.compile('\{([a-zA-Z0-9_]+?)\}')
         for rule in combinations.rules:
             dependent_keys = match_needed_keys.findall(rule)
