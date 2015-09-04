@@ -1,7 +1,6 @@
 # coding: utf-8
-import os.path
+import os
+from genpass.lib.constants import BASE_DIR
 
-
-basedir = os.path.dirname(__file__)
-DICT = os.path.join(basedir, './data/dict.txt')
-PINYIN = os.path.join(basedir, './data/word.data')
+DICT = os.path.join(BASE_DIR, './data/dict.txt')
+PINYIN = os.path.join(BASE_DIR, './data/word.data')

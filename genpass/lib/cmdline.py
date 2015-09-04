@@ -3,10 +3,7 @@ from __future__ import print_function
 import re
 import time
 import argparse
-import csv
-import itertools
 from genpass.lib.person import Person
-from genpass.router import field_map
 
 
 def email(string):
@@ -37,10 +34,7 @@ def cmd_parser():
     parser.add_argument('-b', '--birthday', dest='birthday', action='store',
                         help='birthday of target, format: %%Y-%%m-%%d', type=date, default=None)
     parser.add_argument('-c', '--company', dest='company', nargs='*', action='store',
-                        help='company(english only)/website domain of target', type=str, default=[])
-
-    parser.add_argument('--csv', dest='csv', action='store', type=argparse.FileType('r'),
-                        help='csv files of users list')
+                        help='company / website domain of target', type=str, default=[])
     parser.add_argument('--with-dict', dest='with_dict', action='store_true',
                         help='generate passwords with weak password dictionary')
     parser.add_argument('-o', '--output', dest='output_file', action='store',
@@ -52,10 +46,6 @@ def cmd_parser():
         raise SystemExit
 
     person_list = []
-    if not args.csv:
-        person_list.append(Person(information=args.__dict__, field_map=field_map))
-    else:
-        # TODO: from csv
-        pass
+    person_list.append(Person(information=args.__dict__))
 
     return (args, person_list)

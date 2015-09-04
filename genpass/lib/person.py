@@ -2,11 +2,21 @@
 from __future__ import print_function
 import re
 from itertools import product
-from genpass.generator import generator_map, generate_id_string
+from genpass import generator
 from genpass.rules import combinations, built_in
+from genpass.lib.constants import SEQUENCES
 
 
-__all__ = ['Person']
+__all__ = ['Person', 'BUILT_IN_FIELD_MAP']
+
+BUILT_IN_FIELD_MAP = (
+    ('qq', None),
+    ('birthday', built_in.date_formats),
+    ('company', built_in.company_formats, generator.generate_name),
+    ('name', built_in.name_formats, generator.generate_name),
+    ('username', built_in.general_formats),
+    (('email', 'username'), built_in.general_formats, generator.generate_id_string),
+)
 
 
 class Person(object):
@@ -14,14 +24,7 @@ class Person(object):
 
     def __init__(self, information=None, field_map=()):
         self.information = {} if information is None else information
-        if information and not field_map:
-            field_map = []
-            for key in information.keys():
-                if key == 'email':
-                    field_map.append((key, built_in.general_formats, generate_id_string))
-                else:
-                    field_map.append((key, built_in.general_formats))
-        self.field_map = tuple(field_map)
+        self.field_map = field_map if field_map else BUILT_IN_FIELD_MAP
 
     def generate_source_dict(self):
         '''generate source dictionary `source_dict`.
@@ -76,12 +79,14 @@ class Person(object):
             if not rule and not method:
                 returned = self.information.get(field, set())
             elif rule and not method:
-                returned = generator_map(self.information.get(field, set()), rule)
+                returned = generator.generator_map(self.information.get(field, set()), rule)
             elif method:
                 if not callable(method):
                     raise TypeError('Process function is not callable')
-
-                returned = method(self.information.get(field, []), rule)
+                data = self.information.get(field, [])
+                if not isinstance(data, SEQUENCES):
+                    data = [data]
+                returned = method(data, rule)
                 if not isinstance(returned, set):
                     raise TypeError('UDF returned value should be a set.')
             else:
@@ -114,7 +119,7 @@ class Person(object):
         :return:
         '''
         self.generate_source_dict()
-        match_needed_keys = re.compile('\{(%s)\}' % '|'.join(self.information.keys()))
+        match_needed_keys = re.compile('\{(%s)\}' % '|'.join(self.source_dict.keys()))
         match_keys = re.compile('\{([a-zA-Z0-9_]+?)\}')
         for rule in combinations.rules:
             dependent_keys = match_needed_keys.findall(rule)
