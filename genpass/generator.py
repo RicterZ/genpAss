@@ -1,5 +1,6 @@
 # coding=utf-8
-from lib.pinyin import PinYin
+from genpass.lib.pinyin import PinYin
+from genpass.lib.constants import SEQUENCES
 from config import PINYIN
 
 
@@ -16,8 +17,6 @@ def generator_map(data, formatter_list):
     for format_func in formatter_list:
         if not callable(format_func):
             raise TypeError('formatter is not callable')
-        if not isinstance(data, (list, set, tuple)):
-            data = [data]
         result.update(map(format_func, data))
     return result
 
@@ -33,6 +32,6 @@ def generate_id_string(data, rule):
     id_string = set()
     if isinstance(data, (str, )):
         id_string = data.split('@')[0]
-    elif isinstance(data, (tuple, list, set)):
+    elif isinstance(data, SEQUENCES):
         id_string = map(lambda x: x.split('@')[0], data)
     return set(generator_map(id_string, rule))

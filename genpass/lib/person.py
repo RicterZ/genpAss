@@ -3,20 +3,11 @@ from __future__ import print_function
 import re
 from itertools import product
 import genpass.generator
-from genpass.rules import combinations, built_in
+from genpass.rules import combinations
+from genpass.lib.constants import BUILT_IN_FIELD_MAP, SEQUENCES
 
 
 __all__ = ['Person']
-
-
-BUILT_IN_FIELD_MAP = (
-    ('qq', None),
-    ('birthday', built_in.date_formats),
-    ('company', built_in.general_formats),
-    ('name', built_in.name_formats, genpass.generator.generate_name),
-    ('username', built_in.general_formats),
-    (('email', 'username'), built_in.general_formats, genpass.generator.generate_id_string),
-)
 
 
 class Person(object):
@@ -83,8 +74,10 @@ class Person(object):
             elif method:
                 if not callable(method):
                     raise TypeError('Process function is not callable')
-
-                returned = method(self.information.get(field, []), rule)
+                data = self.information.get(field, [])
+                if not isinstance(data, SEQUENCES):
+                    data = [data]
+                returned = method(data, rule)
                 if not isinstance(returned, set):
                     raise TypeError('UDF returned value should be a set.')
             else:
