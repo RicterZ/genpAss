@@ -22,6 +22,8 @@ def generator_map(data, formatter_list):
 
 
 def generate_name(data, rule):
+    '''built-in password generator of name
+    '''
     pinyin = PinYin(PINYIN)
     pinyin.load_word()
     name_pinyin_list = map(pinyin.hanzi2pinyin, data)
@@ -29,6 +31,8 @@ def generate_name(data, rule):
 
 
 def generate_id_string(data, rule):
+    '''built-in password generator of email
+    '''
     id_string = set()
     if isinstance(data, (str, )):
         id_string = data.split('@')[0]

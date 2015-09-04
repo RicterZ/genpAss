@@ -34,7 +34,7 @@ def cmd_parser():
     parser.add_argument('-b', '--birthday', dest='birthday', action='store',
                         help='birthday of target, format: %%Y-%%m-%%d', type=date, default=None)
     parser.add_argument('-c', '--company', dest='company', nargs='*', action='store',
-                        help='company(english only)/website domain of target', type=str, default=[])
+                        help='company / website domain of target', type=str, default=[])
     parser.add_argument('--with-dict', dest='with_dict', action='store_true',
                         help='generate passwords with weak password dictionary')
     parser.add_argument('-o', '--output', dest='output_file', action='store',

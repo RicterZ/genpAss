@@ -19,7 +19,6 @@ name_formats = [
     lambda x: '%s%s' % (x[0].title(), ''.join(map(lambda i: i[0], x[1:]))),
     lambda x: '%s%s' % (x[0], ''.join(map(lambda i: i[0], x[1:]))),
     lambda x: ('%s%s' % (x[0], ''.join(map(lambda i: i[0], x[1:])))).upper(),
-    # lambda x: '%s%s' % (x[0], ''.join(map(lambda i: i[0].upper(), x[1:]))),
 ]
 
 date_formats = [
@@ -29,6 +28,15 @@ date_formats = [
     lambda x: time.strftime('%y%m%d', x),
     lambda x: time.strftime('%y%-m%-d', x),
     lambda x: time.strftime('%Y%-m%-d', x),
-    # '%y',
-    # '%-m%-d',
+    lambda x: time.strftime('%-m%-d', x),
+]
+
+company_formats = [
+    lambda x: ''.join(x),
+    lambda x: ' '.join(x).title().replace(' ', ''),
+    lambda x: ''.join(map(lambda i: i[0], x)).title(),
+    lambda x: ''.join(map(lambda i: i[0], x)).upper(),
+    lambda x: '%s%s' % (x[0].title(), ''.join(map(lambda i: i[0], x[1:]))),
+    lambda x: '%s%s' % (x[0], ''.join(map(lambda i: i[0], x[1:]))),
+    lambda x: ('%s%s' % (x[0], ''.join(map(lambda i: i[0], x[1:])))).upper(),
 ]

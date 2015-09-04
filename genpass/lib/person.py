@@ -2,12 +2,21 @@
 from __future__ import print_function
 import re
 from itertools import product
-import genpass.generator
-from genpass.rules import combinations
-from genpass.lib.constants import BUILT_IN_FIELD_MAP, SEQUENCES
+from genpass import generator
+from genpass.rules import combinations, built_in
+from genpass.lib.constants import SEQUENCES
 
 
-__all__ = ['Person']
+__all__ = ['Person', 'BUILT_IN_FIELD_MAP']
+
+BUILT_IN_FIELD_MAP = (
+    ('qq', None),
+    ('birthday', built_in.date_formats),
+    ('company', built_in.company_formats, generator.generate_name),
+    ('name', built_in.name_formats, generator.generate_name),
+    ('username', built_in.general_formats),
+    (('email', 'username'), built_in.general_formats, generator.generate_id_string),
+)
 
 
 class Person(object):
@@ -70,7 +79,7 @@ class Person(object):
             if not rule and not method:
                 returned = self.information.get(field, set())
             elif rule and not method:
-                returned = genpass.generator.generator_map(self.information.get(field, set()), rule)
+                returned = generator.generator_map(self.information.get(field, set()), rule)
             elif method:
                 if not callable(method):
                     raise TypeError('Process function is not callable')
