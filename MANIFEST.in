@@ -3,3 +3,4 @@ include genpass/data/word.data
 include genpass/data/dict.txt
 include docs/
 include sample.csv
+include sample.py
