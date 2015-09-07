@@ -76,16 +76,16 @@ class Person(object):
             else:
                 alias = field
 
+            data = self.information.get(field, set())
+            if not isinstance(data, SEQUENCES):
+                data = [data]
             if not rule and not method:
-                returned = self.information.get(field, set())
+                returned = data
             elif rule and not method:
-                returned = generator.generator_map(self.information.get(field, set()), rule)
+                returned = generator.generator_map(data, rule)
             elif method:
                 if not callable(method):
                     raise TypeError('Process function is not callable')
-                data = self.information.get(field, [])
-                if not isinstance(data, SEQUENCES):
-                    data = [data]
                 returned = method(data, rule)
                 if not isinstance(returned, set):
                     raise TypeError('UDF returned value should be a set.')
