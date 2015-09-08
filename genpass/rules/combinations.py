@@ -24,6 +24,9 @@ rules = [
     '{company}@2015',
     '{company}1q2w3e4r',
     '{company}1q2w3e4r5t',
+    '{company}888',
+    '{company}666',
+    '{company}8888',
 
     'QQ{qq}',
     'qq{qq}',
