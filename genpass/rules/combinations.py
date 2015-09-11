@@ -12,6 +12,7 @@ rules = [
     '{username}!',
     '{username}!0123',
     '{username}123',
+    '{username}123!@#',
 
     '{company}123',
     '{company}1234',
@@ -22,6 +23,10 @@ rules = [
     '{company}@123',
     '{company}@2014',
     '{company}@2015',
+    '{company}@1q2w3e',
+    '{company}1q2w3e',
+    '1q2w3e4r{company}@2014',
+    '1q2w3e4r{company}@2015',
     '{company}1q2w3e4r',
     '{company}1q2w3e4r5t',
     '{company}888',

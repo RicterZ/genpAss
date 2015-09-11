@@ -11,7 +11,7 @@ def generator_map(data, formatter_list):
     :param formatter_list: formatting function
     :return: strings list
     '''
-    if not data:
+    if not data or not any(data):
         return set()
     result = set()
     for format_func in formatter_list:
