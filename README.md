@@ -5,7 +5,7 @@
 ### Installation
 
     git clone https://github.com/RicterZ/genpAss
-    cd genAss && python setup.py install
+    cd genpAss && python setup.py install
 
 ### Usage
 
