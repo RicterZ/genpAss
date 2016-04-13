@@ -19,6 +19,7 @@ name_formats = [
     lambda x: '%s%s' % (x[0].title(), ''.join(map(lambda i: i[0], x[1:]))),
     lambda x: '%s%s' % (x[0], ''.join(map(lambda i: i[0], x[1:]))),
     lambda x: ('%s%s' % (x[0], ''.join(map(lambda i: i[0], x[1:])))).upper(),
+    lambda x: ('%s%s' % (x[0].upper(), ''.join(x[1:]))),
 ]
 
 date_formats = [
