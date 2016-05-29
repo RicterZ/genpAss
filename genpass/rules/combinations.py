@@ -8,6 +8,11 @@ rules = [
     '{birthday}',
     '{mobile}',
 
+    '{name}.',
+    '{name}!',
+    '{name}!0123',
+    '{name}123',
+    '{name}123!@#',
     '{username}.',
     '{username}!',
     '{username}!0123',
