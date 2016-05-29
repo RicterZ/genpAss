@@ -3,7 +3,7 @@ from __future__ import print_function
 import re
 import time
 import argparse
-from genpass.lib.person import Person
+from genpass.lib.password import Password
 
 
 def email(string):
@@ -46,6 +46,6 @@ def cmd_parser():
         raise SystemExit
 
     person_list = []
-    person_list.append(Person(information=args.__dict__))
+    person_list.append(Password(information=args.__dict__))
 
     return (args, person_list)

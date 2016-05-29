@@ -8,8 +8,8 @@ import rules
 import command
 import config
 import lib
-from .lib.person import Person
+from .lib.password import Password
 from .lib.pinyin import PinYin
 
 
-__all__ = ['rules', 'command', 'config', 'lib', 'VERSION', '__author__', '__email__', 'Person', 'PinYin']
+__all__ = ['rules', 'command', 'config', 'lib', 'VERSION', '__author__', '__email__', 'Password', 'PinYin']

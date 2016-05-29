@@ -1,5 +1,5 @@
 # coding: utf-8
-from genpass import Person
+from genpass import Password
 from pprint import pprint
 
 emails = [
@@ -11,7 +11,7 @@ emails = [
 company = [u'长亭', 'chaitin']
 
 result = {}
-persons = [Person(information={'email': email, 'company': company}) for email in emails]
+persons = [Password(information={'email': email, 'company': company}) for email in emails]
 
 for person in persons:
     result[person.information['email']] = list(person.generate_password())

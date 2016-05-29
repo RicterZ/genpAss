@@ -13,7 +13,7 @@ name_formats = [
     lambda x: ''.join(x),
     lambda x: ' '.join(x).title().replace(' ', ''),
     lambda x: ''.join(map(lambda i: i[0], x)),
-    lambda x: ''.join(map(lambda i: i[0], x)) * 2,
+    # lambda x: ''.join(map(lambda i: i[0], x)) * 2,
     lambda x: ''.join(map(lambda i: i[0], x)).title(),
     lambda x: ''.join(map(lambda i: i[0], x)).upper(),
     lambda x: '%s%s' % (x[0].title(), ''.join(map(lambda i: i[0], x[1:]))),
