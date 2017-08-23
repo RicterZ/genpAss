@@ -29,9 +29,9 @@ date_formats = [
     lambda x: time.strftime('%m%d', x),
     lambda x: time.strftime('%Y%m%d', x),
     lambda x: time.strftime('%y%m%d', x),
-    lambda x: time.strftime('%y%-m%-d', x),
-    lambda x: time.strftime('%Y%-m%-d', x),
-    lambda x: time.strftime('%-m%-d', x),
+    lambda x: time.strftime('%y-%m-%d', x),
+    lambda x: time.strftime('%Y-%m-%d', x),
+    lambda x: time.strftime('%m-%d', x),
 ]
 
 company_formats = [
